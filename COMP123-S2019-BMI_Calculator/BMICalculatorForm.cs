@@ -12,13 +12,11 @@ namespace COMP123_S2019_BMI_Calculator
 {
     public partial class BMICalculatorForm : Form
     {
-
         public string outputString { get; set; }
         public float outputValue { get; set; }
         public bool decimalExists { get; set; }
-        public Label ActiveLabel { get; set; }
-
-        public Animation animationState;
+        public TextBox ActiveTextBox { get; set; }
+        public double Result { get; set; }
 
         /// <summary>
         /// this is the constructor for the BMICalculatorForm
@@ -35,9 +33,11 @@ namespace COMP123_S2019_BMI_Calculator
         /// <param name="e"></param>
         private void BMICalculatorForm_Load(object sender, EventArgs e)
         {
-            clearNumericKeyboard();
-            ActiveLabel = null;
-            NumericKeyboardPanel.Visible = true;
+            ClearNumericKeyboard();
+            ActiveTextBox = WeightTextBox;
+            WeightUnitLabel.Text = "kg";
+            HeightUnitLabel.Text = "cm";
+           // NumericKeyboardPanel.Visible = true;
         }
 
         /// <summary>
@@ -47,16 +47,16 @@ namespace COMP123_S2019_BMI_Calculator
         /// <param name="e"></param>
         private void BMICalculatorForm_Click(object sender, EventArgs e)
         {
-            clearNumericKeyboard();
-            if (ActiveLabel != null)
+            ClearNumericKeyboard();
+            if (ActiveTextBox.Text != string.Empty)
             {
-                ActiveLabel.BackColor = Color.White;
+                ActiveTextBox.BackColor = Color.White;
             }
-            ActiveLabel = null;
+            ActiveTextBox.Text = string.Empty;
         }
 
         /// <summary>
-        /// this is the shared event handler for all the calculator buttons - click event
+        /// this is the shared event handler for all the KeyboardButton's Click event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -69,7 +69,6 @@ namespace COMP123_S2019_BMI_Calculator
             int buttonValue = 0;
             bool numericResult = int.TryParse(tag, out buttonValue);
 
-            //If the user pressed a number button 
             if (numericResult)
             {
                 int maxSize = 3;
@@ -77,34 +76,33 @@ namespace COMP123_S2019_BMI_Calculator
                 {
                     maxSize = 5;
                 }
-
                 if (outputString == "0")
                 {
                     outputString = tag;
                 }
-                if ((outputString != "0") && (ActiveLabel.Text.Count() < maxSize))
+                if (outputString != "0" && outputString.Length < maxSize)
                 {
                     outputString += tag;
-                    ActiveLabel.Text = outputString;
                 }
+                ActiveTextBox.Text = outputString;
             }
-
-            // if the user pressed a button that is not a number
             else
             {
                 switch (tag)
                 {
                     case "reset":
-                        clearNumericKeyboard();
+                        ClearNumericKeyboard();
+                        BMIProgressBar.Value = 0;
                         break;
                     case "back":
-                        removeLastCharacterFromResultLabel();
+                        RemoveLastCharacterFromActiveTextBox();
                         break;
                     case "calculate":
-                        finalizeOutput();
+                        //CalculateBMI();
+                        BMIProgressBar.Value = 0;
                         break;
                     case "decimal":
-                        addDecimalToResultLabel();
+                        AddDecimalToActiveTextBox();
                         break;
                 }
             }
@@ -113,13 +111,12 @@ namespace COMP123_S2019_BMI_Calculator
         /// <summary>
         /// this method finalizes and converts the outputString to a floating point value
         /// </summary>
-        private void finalizeOutput()
+        private void FinalizeOutput()
         {
             if (outputString == string.Empty)
             {
                 outputString = "0";
             }
-
             if (outputValue < 0.1f)
             {
                 outputValue = 0.1f;
@@ -127,17 +124,16 @@ namespace COMP123_S2019_BMI_Calculator
             outputValue = float.Parse(outputString);
 
             outputValue = (float)(Math.Round(outputValue, 1));
-            ActiveLabel.Text = outputValue.ToString();
-            clearNumericKeyboard();
+            ActiveTextBox.Text = outputValue.ToString();
+            ClearNumericKeyboard();
 
-            ActiveLabel.BackColor = Color.White;
-            ActiveLabel = null;
+            ActiveTextBox.BackColor = Color.White;
         }
 
         /// <summary>
-        /// this method adds a decimal point  to the resultLabel
+        /// this method adds a decimal point  to the ActiveTextBox
         /// </summary>
-        private void addDecimalToResultLabel()
+        private void AddDecimalToActiveTextBox()
         {
             if (!decimalExists)
             {
@@ -147,9 +143,9 @@ namespace COMP123_S2019_BMI_Calculator
         }
 
         /// <summary>
-        /// this method removes the last character from the resultLabel
+        /// this method removes the last character from the ActiveTextBox
         /// </summary>
-        private void removeLastCharacterFromResultLabel()
+        private void RemoveLastCharacterFromActiveTextBox()
 
         {
             var lastChar = outputString.Substring(outputString.Length - 1);
@@ -162,43 +158,60 @@ namespace COMP123_S2019_BMI_Calculator
             {
                 outputString = "0";
             }
-            CalculatedBMITextBox.Text = outputString;
+            ActiveTextBox.Text = outputString;
         }
         /// <summary>
         /// this method resets the numeric keyboard and related variables 
         /// </summary>
-        private void clearNumericKeyboard()
+        private void ClearNumericKeyboard()
         {
             CalculatedBMITextBox.Text = "0";
-            outputString = String.Empty;
-            decimalExists = false;
             outputValue = 0.0f;
+            outputString = null;
+            decimalExists = false;
+            WeightTextBox.Text = "0";
+            HeightTextBox.Text = "0";
+            ConditionTextBox.Text = "";
+            BMIProgressBar.Value = 0;
         }
 
         /// <summary>
-        ///  this is the event handler for ActiveLabel Click event
+        ///  this is the event handler for ActiveTextBox Click event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ActiveLabel_Click(object sender, EventArgs e)
+        private void ActiveTextBox_Click(object sender, EventArgs e)
         {
-            if (ActiveLabel != null)
+            ActiveTextBox = sender as TextBox;
+            if (ActiveTextBox != null)
             {
-                ActiveLabel.BackColor = Color.White;
-                ActiveLabel = null;
+                ActiveTextBox.BackColor = Color.White;
+                ActiveTextBox = null;
             }
-
-            ActiveLabel = sender as Label;
-
-            ActiveLabel.BackColor = Color.LightBlue;
-
+            outputValue = 0.0f;
+            outputString = String.Empty;
             NumericKeyboardPanel.Visible = true;
-
-            if (ActiveLabel.Text != "0")
-            {
-                CalculatedBMITextBox.Text = ActiveLabel.Text;
-                outputString = ActiveLabel.Text;
-            }
         }
+        /// <summary>
+        /// this is the event handler for MetricRadioButton Checked event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MetricRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            WeightUnitLabel.Text = "kg";
+            HeightUnitLabel.Text = "cm";
+        }
+        /// <summary>
+        /// this is the event handler for ImperialRadioButton Checked event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ImperialRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            WeightUnitLabel.Text = "lb";
+            HeightUnitLabel.Text = "in";
+        }
+        
     }
 }

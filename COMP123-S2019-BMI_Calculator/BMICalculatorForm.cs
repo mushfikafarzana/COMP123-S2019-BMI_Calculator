@@ -44,7 +44,10 @@ namespace COMP123_S2019_BMI_Calculator
         /// <param name="e"></param>
         private void BMICalculatorForm_Click(object sender, EventArgs e)
         {
-            ClearNumericKeyboard();      
+            ClearNumericKeyboard();
+            MetricRadioButton.Checked = true;
+            WeightTextBox.BackColor = Color.Azure;
+            HeightTextBox.BackColor = Color.Azure;
         }
 
         /// <summary>
@@ -68,11 +71,11 @@ namespace COMP123_S2019_BMI_Calculator
                 {
                     maxSize = 5;
                 }
-                if (outputString == "0")
+                else if (outputString == "0")
                 {
                     ActiveTextBox.Text = tag;
                 }
-                if (outputString != "0" && outputString.Length < maxSize)
+                else if (outputString != "0" && outputString.Length < maxSize)
                 {
                     ActiveTextBox.Text += tag ;
                 }
@@ -92,33 +95,12 @@ namespace COMP123_S2019_BMI_Calculator
                         outputValue = 0;
                         BMIProgressBar.Value = 0;
                         CalculateBMI();
-                       // DisplayBMILevel();
                         break;
                     case "decimal":
                         AddDecimalToActiveTextBox();
                         break;
                 }
             }
-        }
-
-        /// <summary>
-        /// this method finalizes and converts the outputString to a floating point value
-        /// </summary>
-        private void FinalizeOutput()
-        {
-            if (outputString == string.Empty)
-            {
-                outputString = "0";
-            }
-            if (outputValue < 0.1f)
-            {
-                outputValue = 0.1f;
-            }
-            outputValue = float.Parse(outputString);
-
-            outputValue = (float)(Math.Round(outputValue, 1));
-            ActiveTextBox.Text = outputValue.ToString();
-          // ClearNumericKeyboard();
         }
 
         /// <summary>
@@ -129,9 +111,9 @@ namespace COMP123_S2019_BMI_Calculator
             if (!decimalExists)
             {
                 outputString += ".";
-                decimalExists = true;
+                decimalExists = false;
             }
-            ActiveTextBox.Text += WeightTextBox;
+            ActiveTextBox.Text += outputString;
         }
 
         /// <summary>
@@ -139,24 +121,24 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void RemoveLastCharacterFromActiveTextBox()
         {
-            var lastChar = outputString.Substring(outputString.Length - 1);
+            var lastChar = ActiveTextBox.Text.Substring(ActiveTextBox.Text.Length - 1);
             if (lastChar == ".")
             {
                 decimalExists = false;
             }
-            outputString = outputString.Remove(outputString.Length - 1);
-            if (outputString.Length == 0)
-            {
-                outputString = "0";
+
+            else if (ActiveTextBox.Text.Length == 0)
+            { 
+                ActiveTextBox.Text = "0";
             }
-            ActiveTextBox.Text = outputString;
+            ActiveTextBox.Text = ActiveTextBox.Text.Remove(ActiveTextBox.Text.Length - 1);
         }
         /// <summary>
         /// this method resets the numeric keyboard and related variables 
         /// </summary>
         private void ClearNumericKeyboard()
         {
-            CalculatedBMITextBox.Text = "0";
+            CalculatedBMITextBox.Text = "";
             outputValue = 0.0f;
             outputString = "";
             decimalExists = false;
@@ -164,6 +146,7 @@ namespace COMP123_S2019_BMI_Calculator
             HeightTextBox.Text = "";
             ActiveTextBox = WeightTextBox;
             ConditionTextBox.Text = "";
+            HeightTextBox.BackColor = Color.White;
         }
 
         /// <summary>
@@ -173,13 +156,16 @@ namespace COMP123_S2019_BMI_Calculator
         /// <param name="e"></param>
         private void ActiveTextBox_Click(object sender, EventArgs e)
         {
-            ActiveTextBox = sender as TextBox;
             if (ActiveTextBox != null)
             {
                 ActiveTextBox.BackColor = Color.White;
             }
-            outputValue = 0.0f;
-            outputString = String.Empty;
+            ActiveTextBox = sender as TextBox;
+            ActiveTextBox.BackColor = Color.Azure;
+            if (ActiveTextBox.Text != "0")
+            {
+                outputString = ActiveTextBox.Text;
+            }
         }
         /// <summary>
         /// this is the event handler for MetricRadioButton Checked event
@@ -207,7 +193,7 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void CalculateBMI()
         {
-            if (int.TryParse(HeightTextBox.Text, out int Height) && int.TryParse(WeightTextBox.Text, out int Weight))
+            if (float.TryParse(HeightTextBox.Text, out float Height) && float.TryParse(WeightTextBox.Text, out float Weight))
             {
                 var height = Convert.ToDouble(HeightTextBox.Text);
                 var weight = Convert.ToDouble(WeightTextBox.Text);
@@ -239,6 +225,7 @@ namespace COMP123_S2019_BMI_Calculator
                 CalculatedBMITextBox.Text = "Please Enter all values!";
                 CalculatedBMITextBox.ForeColor = Color.Navy;
             }
+            
         }
 
         private void DisplayBMILevel()
@@ -275,5 +262,10 @@ namespace COMP123_S2019_BMI_Calculator
             }
         }
 
+        private void BMICalculatorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+
+        }
     }
 }

@@ -69,5 +69,15 @@ namespace COMP123_S2019_BMI_Calculator.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Healthy_Eating {
+            get {
+                object obj = ResourceManager.GetObject("Healthy-Eating", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

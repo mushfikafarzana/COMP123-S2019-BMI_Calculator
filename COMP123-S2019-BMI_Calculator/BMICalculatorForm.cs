@@ -34,10 +34,7 @@ namespace COMP123_S2019_BMI_Calculator
         private void BMICalculatorForm_Load(object sender, EventArgs e)
         {
             ClearNumericKeyboard();
-            ActiveTextBox = WeightTextBox;
-            WeightUnitLabel.Text = "kg";
-            HeightUnitLabel.Text = "cm";
-           // NumericKeyboardPanel.Visible = true;
+            MetricRadioButton.Checked = true;
         }
 
         /// <summary>
@@ -47,12 +44,7 @@ namespace COMP123_S2019_BMI_Calculator
         /// <param name="e"></param>
         private void BMICalculatorForm_Click(object sender, EventArgs e)
         {
-            ClearNumericKeyboard();
-            if (ActiveTextBox.Text != string.Empty)
-            {
-                ActiveTextBox.BackColor = Color.White;
-            }
-            ActiveTextBox.Text = string.Empty;
+            ClearNumericKeyboard();      
         }
 
         /// <summary>
@@ -78,13 +70,12 @@ namespace COMP123_S2019_BMI_Calculator
                 }
                 if (outputString == "0")
                 {
-                    outputString = tag;
+                    ActiveTextBox.Text = tag;
                 }
                 if (outputString != "0" && outputString.Length < maxSize)
                 {
-                    outputString += tag;
+                    ActiveTextBox.Text += tag ;
                 }
-                ActiveTextBox.Text = outputString;
             }
             else
             {
@@ -98,8 +89,10 @@ namespace COMP123_S2019_BMI_Calculator
                         RemoveLastCharacterFromActiveTextBox();
                         break;
                     case "calculate":
-                        //CalculateBMI();
+                        outputValue = 0;
                         BMIProgressBar.Value = 0;
+                        CalculateBMI();
+                       // DisplayBMILevel();
                         break;
                     case "decimal":
                         AddDecimalToActiveTextBox();
@@ -125,9 +118,7 @@ namespace COMP123_S2019_BMI_Calculator
 
             outputValue = (float)(Math.Round(outputValue, 1));
             ActiveTextBox.Text = outputValue.ToString();
-            ClearNumericKeyboard();
-
-            ActiveTextBox.BackColor = Color.White;
+          // ClearNumericKeyboard();
         }
 
         /// <summary>
@@ -140,13 +131,13 @@ namespace COMP123_S2019_BMI_Calculator
                 outputString += ".";
                 decimalExists = true;
             }
+            ActiveTextBox.Text += WeightTextBox;
         }
 
         /// <summary>
         /// this method removes the last character from the ActiveTextBox
         /// </summary>
         private void RemoveLastCharacterFromActiveTextBox()
-
         {
             var lastChar = outputString.Substring(outputString.Length - 1);
             if (lastChar == ".")
@@ -167,12 +158,12 @@ namespace COMP123_S2019_BMI_Calculator
         {
             CalculatedBMITextBox.Text = "0";
             outputValue = 0.0f;
-            outputString = null;
+            outputString = "";
             decimalExists = false;
-            WeightTextBox.Text = "0";
-            HeightTextBox.Text = "0";
+            WeightTextBox.Text = "";
+            HeightTextBox.Text = "";
+            ActiveTextBox = WeightTextBox;
             ConditionTextBox.Text = "";
-            BMIProgressBar.Value = 0;
         }
 
         /// <summary>
@@ -186,11 +177,9 @@ namespace COMP123_S2019_BMI_Calculator
             if (ActiveTextBox != null)
             {
                 ActiveTextBox.BackColor = Color.White;
-                ActiveTextBox = null;
             }
             outputValue = 0.0f;
             outputString = String.Empty;
-            NumericKeyboardPanel.Visible = true;
         }
         /// <summary>
         /// this is the event handler for MetricRadioButton Checked event
@@ -212,6 +201,79 @@ namespace COMP123_S2019_BMI_Calculator
             WeightUnitLabel.Text = "lb";
             HeightUnitLabel.Text = "in";
         }
-        
+
+        /// <summary>
+        /// this method calculates BMI 
+        /// </summary>
+        private void CalculateBMI()
+        {
+            if (int.TryParse(HeightTextBox.Text, out int Height) && int.TryParse(WeightTextBox.Text, out int Weight))
+            {
+                var height = Convert.ToDouble(HeightTextBox.Text);
+                var weight = Convert.ToDouble(WeightTextBox.Text);
+                if (height > 0 && height <= 999 && weight > 0 && weight <= 999)
+                {
+                    if (MetricRadioButton.Checked == true)
+                    {
+                        Result = (weight /( height * height)) * 10000;
+                        CalculatedBMITextBox.Text = string.Format($"{Result:F1}").ToString();
+                        DisplayBMILevel();
+                    }
+                    else if (ImperialRadioButton.Checked == true)
+                    {
+                        Result = weight * 703 / (height * height);
+                        CalculatedBMITextBox.Text = string.Format($"{Result:F1}").ToString();
+                        DisplayBMILevel();
+                    }
+                }
+
+                else
+                {
+                    CalculatedBMITextBox.Text = "Please Enter all values!";
+                    CalculatedBMITextBox.ForeColor = Color.Navy;
+                }
+            }
+
+            else
+            {
+                CalculatedBMITextBox.Text = "Please Enter all values!";
+                CalculatedBMITextBox.ForeColor = Color.Navy;
+            }
+        }
+
+        private void DisplayBMILevel()
+        {
+            BMIProgressBar.Value = 0;
+            BMIProgressBar.Maximum = 4;
+            if (Result < 18.5)
+            {
+                ConditionTextBox.Text = "You are Underweight";
+                ConditionTextBox.ForeColor = Color.Brown;
+                BMIProgressBar.Value += 1;
+                BMIProgressBar.ForeColor = Color.Brown;
+            }
+            else if (Result >= 18.5 && Result <= 24.9)
+            {
+                ConditionTextBox.Text = "You are Normal";
+                ConditionTextBox.ForeColor = Color.Green;
+                BMIProgressBar.Value += 2;
+                BMIProgressBar.ForeColor = Color.Green;
+            }
+            else if (Result >= 25 && Result <= 29.9)
+            {
+                ConditionTextBox.Text = "You are Overweight";
+                ConditionTextBox.ForeColor = Color.Orange;
+                BMIProgressBar.Value += 3;
+                BMIProgressBar.ForeColor = Color.Orange;
+            }
+            else if (Result >= 30)
+            {
+                ConditionTextBox.Text = "You are Obese";
+                ConditionTextBox.ForeColor = Color.Red;
+                BMIProgressBar.Value += 4;
+                BMIProgressBar.ForeColor = Color.Red;
+            }
+        }
+
     }
 }

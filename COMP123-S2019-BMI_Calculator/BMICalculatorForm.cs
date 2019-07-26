@@ -35,6 +35,7 @@ namespace COMP123_S2019_BMI_Calculator
         {
             ClearNumericKeyboard();
             MetricRadioButton.Checked = true;
+            ActiveTextBox = WeightTextBox;
         }
 
         /// <summary>
@@ -66,10 +67,10 @@ namespace COMP123_S2019_BMI_Calculator
 
             if (numericResult)
             {
-                int maxSize = 3;
-                if (decimalExists == true)
+                int maxSize = 4;
+                if (decimalExists)
                 {
-                    maxSize = 5;
+                    maxSize = 6;
                 }
                 if (ActiveTextBox.Text == "0")
                 {
@@ -92,7 +93,6 @@ namespace COMP123_S2019_BMI_Calculator
                         RemoveLastCharacterFromActiveTextBox();
                         break;
                     case "calculate":
-                        outputValue = 0;
                         BMIProgressBar.Value = 0;
                         CalculateBMI();
                         break;
@@ -108,8 +108,11 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void AddDecimalToActiveTextBox()
         {
-            ActiveTextBox.Text += ".";
-            decimalExists = true;
+            if (!decimalExists)
+            {
+                ActiveTextBox.Text += ".";
+                decimalExists = true;
+            }
         }
 
         /// <summary>
@@ -134,7 +137,7 @@ namespace COMP123_S2019_BMI_Calculator
             decimalExists = false;
             WeightTextBox.Text = "";
             HeightTextBox.Text = "";
-            ActiveTextBox = WeightTextBox;
+            //ActiveTextBox = WeightTextBox;
             ConditionTextBox.Text = "";
             HeightTextBox.BackColor = Color.White;
             WeightTextBox.BackColor = Color.White;
@@ -152,6 +155,18 @@ namespace COMP123_S2019_BMI_Calculator
                 ActiveTextBox.BackColor = Color.White;
             }
             ActiveTextBox = sender as TextBox;
+
+            // Check flag is exist in the text box
+            string text = ActiveTextBox.Text;
+            if (text.Contains('.'))
+            {
+                decimalExists = true;
+            }
+            else
+            {
+                decimalExists = false;
+            }
+
             ActiveTextBox.BackColor = Color.Azure;
             if (ActiveTextBox.Text != "0")
             {
@@ -184,7 +199,7 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void CalculateBMI()
         {
-            if (float.TryParse(HeightTextBox.Text, out float Height) && float.TryParse(WeightTextBox.Text, out float Weight))
+            if (double.TryParse(HeightTextBox.Text, out double Height) && double.TryParse(WeightTextBox.Text, out double Weight))
             {
                 var height = Convert.ToDouble(HeightTextBox.Text);
                 var weight = Convert.ToDouble(WeightTextBox.Text);
@@ -206,13 +221,13 @@ namespace COMP123_S2019_BMI_Calculator
                 else
                 {
                     CalculatedBMITextBox.Text = "Enter correct values!";
-                    CalculatedBMITextBox.ForeColor = Color.Navy;
+                    CalculatedBMITextBox.ForeColor = Color.Maroon;
                 }
             }
             else
             {
                 CalculatedBMITextBox.Text = "Enter all values!";
-                CalculatedBMITextBox.ForeColor = Color.Navy;
+                CalculatedBMITextBox.ForeColor = Color.Maroon;
             }
             
         }
@@ -227,9 +242,9 @@ namespace COMP123_S2019_BMI_Calculator
             if (Result < 18.5)
             {
                 ConditionTextBox.Text = "You are Underweight";
-                ConditionTextBox.ForeColor = Color.Brown;
+                ConditionTextBox.ForeColor = Color.Yellow;
                 BMIProgressBar.Value += 1;
-                BMIProgressBar.ForeColor = Color.Brown;
+                BMIProgressBar.ForeColor = Color.Yellow;
             }
             else if (Result >= 18.5 && Result <= 24.9)
             {

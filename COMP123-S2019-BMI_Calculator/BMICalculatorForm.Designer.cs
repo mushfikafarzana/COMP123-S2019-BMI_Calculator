@@ -140,7 +140,7 @@
             this.OneButton.Location = new System.Drawing.Point(3, 91);
             this.OneButton.Name = "OneButton";
             this.OneButton.Size = new System.Drawing.Size(64, 39);
-            this.OneButton.TabIndex = 6;
+            this.OneButton.TabIndex = 8;
             this.OneButton.Tag = "1";
             this.OneButton.Text = "1";
             this.OneButton.UseVisualStyleBackColor = false;
@@ -155,7 +155,7 @@
             this.SixButton.Location = new System.Drawing.Point(143, 47);
             this.SixButton.Name = "SixButton";
             this.SixButton.Size = new System.Drawing.Size(64, 38);
-            this.SixButton.TabIndex = 5;
+            this.SixButton.TabIndex = 11;
             this.SixButton.Tag = "6";
             this.SixButton.Text = "6";
             this.SixButton.UseVisualStyleBackColor = false;
@@ -170,7 +170,7 @@
             this.FiveButton.Location = new System.Drawing.Point(73, 47);
             this.FiveButton.Name = "FiveButton";
             this.FiveButton.Size = new System.Drawing.Size(64, 38);
-            this.FiveButton.TabIndex = 4;
+            this.FiveButton.TabIndex = 12;
             this.FiveButton.Tag = "5";
             this.FiveButton.Text = "5";
             this.FiveButton.UseVisualStyleBackColor = false;
@@ -185,7 +185,7 @@
             this.NineButton.Location = new System.Drawing.Point(143, 3);
             this.NineButton.Name = "NineButton";
             this.NineButton.Size = new System.Drawing.Size(64, 38);
-            this.NineButton.TabIndex = 2;
+            this.NineButton.TabIndex = 7;
             this.NineButton.Tag = "9";
             this.NineButton.Text = "9";
             this.NineButton.UseVisualStyleBackColor = false;
@@ -200,7 +200,7 @@
             this.EightButton.Location = new System.Drawing.Point(73, 3);
             this.EightButton.Name = "EightButton";
             this.EightButton.Size = new System.Drawing.Size(64, 38);
-            this.EightButton.TabIndex = 1;
+            this.EightButton.TabIndex = 7;
             this.EightButton.Tag = "8";
             this.EightButton.Text = "8";
             this.EightButton.UseVisualStyleBackColor = false;
@@ -215,7 +215,7 @@
             this.SevenButton.Location = new System.Drawing.Point(3, 3);
             this.SevenButton.Name = "SevenButton";
             this.SevenButton.Size = new System.Drawing.Size(64, 38);
-            this.SevenButton.TabIndex = 0;
+            this.SevenButton.TabIndex = 7;
             this.SevenButton.Tag = "7";
             this.SevenButton.Text = "7";
             this.SevenButton.UseVisualStyleBackColor = false;

@@ -67,15 +67,15 @@ namespace COMP123_S2019_BMI_Calculator
             if (numericResult)
             {
                 int maxSize = 3;
-                if (decimalExists)
+                if (decimalExists == true)
                 {
                     maxSize = 5;
                 }
-                else if (outputString == "0")
+                if (ActiveTextBox.Text == "0")
                 {
                     ActiveTextBox.Text = tag;
                 }
-                else if (outputString != "0" && outputString.Length < maxSize)
+                if (ActiveTextBox.Text != "0" && ActiveTextBox.Text.Length < maxSize)
                 {
                     ActiveTextBox.Text += tag ;
                 }
@@ -108,12 +108,8 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void AddDecimalToActiveTextBox()
         {
-            if (!decimalExists)
-            {
-                outputString += ".";
-                decimalExists = false;
-            }
-            ActiveTextBox.Text += outputString;
+            ActiveTextBox.Text += ".";
+            decimalExists = true;
         }
 
         /// <summary>
@@ -121,14 +117,8 @@ namespace COMP123_S2019_BMI_Calculator
         /// </summary>
         private void RemoveLastCharacterFromActiveTextBox()
         {
-            var lastChar = ActiveTextBox.Text.Substring(ActiveTextBox.Text.Length - 1);
-            if (lastChar == ".")
+            if (ActiveTextBox.Text.Length == 0)
             {
-                decimalExists = false;
-            }
-
-            else if (ActiveTextBox.Text.Length == 0)
-            { 
                 ActiveTextBox.Text = "0";
             }
             ActiveTextBox.Text = ActiveTextBox.Text.Remove(ActiveTextBox.Text.Length - 1);
@@ -147,6 +137,7 @@ namespace COMP123_S2019_BMI_Calculator
             ActiveTextBox = WeightTextBox;
             ConditionTextBox.Text = "";
             HeightTextBox.BackColor = Color.White;
+            WeightTextBox.BackColor = Color.White;
         }
 
         /// <summary>
@@ -189,7 +180,7 @@ namespace COMP123_S2019_BMI_Calculator
         }
 
         /// <summary>
-        /// this method calculates BMI 
+        /// this method calculates BMI based on user's weight and height
         /// </summary>
         private void CalculateBMI()
         {
@@ -197,11 +188,11 @@ namespace COMP123_S2019_BMI_Calculator
             {
                 var height = Convert.ToDouble(HeightTextBox.Text);
                 var weight = Convert.ToDouble(WeightTextBox.Text);
-                if (height > 0 && height <= 999 && weight > 0 && weight <= 999)
+                if (height > 0 && height <= 300 && weight > 0 && weight <= 1500)
                 {
                     if (MetricRadioButton.Checked == true)
                     {
-                        Result = (weight /( height * height)) * 10000;
+                        Result = (weight / (height * height)) * 10000;
                         CalculatedBMITextBox.Text = string.Format($"{Result:F1}").ToString();
                         DisplayBMILevel();
                     }
@@ -212,22 +203,23 @@ namespace COMP123_S2019_BMI_Calculator
                         DisplayBMILevel();
                     }
                 }
-
                 else
                 {
-                    CalculatedBMITextBox.Text = "Please Enter all values!";
+                    CalculatedBMITextBox.Text = "Enter correct values!";
                     CalculatedBMITextBox.ForeColor = Color.Navy;
                 }
             }
-
             else
             {
-                CalculatedBMITextBox.Text = "Please Enter all values!";
+                CalculatedBMITextBox.Text = "Enter all values!";
                 CalculatedBMITextBox.ForeColor = Color.Navy;
             }
             
         }
 
+        /// <summary>
+        /// this method displays BMI condition level based on the result
+        /// </summary>
         private void DisplayBMILevel()
         {
             BMIProgressBar.Value = 0;
@@ -261,7 +253,11 @@ namespace COMP123_S2019_BMI_Calculator
                 BMIProgressBar.ForeColor = Color.Red;
             }
         }
-
+        /// <summary>
+        /// this is the event handler for BMICalculatorForm FormClosing event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BMICalculatorForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();

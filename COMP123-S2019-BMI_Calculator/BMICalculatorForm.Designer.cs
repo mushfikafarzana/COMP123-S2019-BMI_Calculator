@@ -38,6 +38,7 @@
             this.NineButton = new System.Windows.Forms.Button();
             this.EightButton = new System.Windows.Forms.Button();
             this.SevenButton = new System.Windows.Forms.Button();
+            this.BackSpaceButton = new System.Windows.Forms.Button();
             this.FourButton = new System.Windows.Forms.Button();
             this.ZeroButton = new System.Windows.Forms.Button();
             this.ThreeButton = new System.Windows.Forms.Button();
@@ -55,7 +56,6 @@
             this.ResetButton = new System.Windows.Forms.Button();
             this.CalculatedBMITextBox = new System.Windows.Forms.TextBox();
             this.ConditionTextBox = new System.Windows.Forms.TextBox();
-            this.BackSpaceButton = new System.Windows.Forms.Button();
             this.NumericKeyboardPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -220,6 +220,23 @@
             this.SevenButton.Text = "7";
             this.SevenButton.UseVisualStyleBackColor = false;
             this.SevenButton.Click += new System.EventHandler(this.KeyBoardButton_Click);
+            // 
+            // BackSpaceButton
+            // 
+            this.BackSpaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BackSpaceButton.BackColor = System.Drawing.Color.SteelBlue;
+            this.BackSpaceButton.BackgroundImage = global::COMP123_S2019_BMI_Calculator.Properties.Resources.backbutton;
+            this.BackSpaceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BackSpaceButton.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BackSpaceButton.Location = new System.Drawing.Point(213, 3);
+            this.BackSpaceButton.Name = "BackSpaceButton";
+            this.BackSpaceButton.Size = new System.Drawing.Size(64, 38);
+            this.BackSpaceButton.TabIndex = 2;
+            this.BackSpaceButton.Tag = "back";
+            this.BackSpaceButton.UseVisualStyleBackColor = false;
+            this.BackSpaceButton.Click += new System.EventHandler(this.KeyBoardButton_Click);
             // 
             // FourButton
             // 
@@ -400,10 +417,10 @@
             // 
             this.CalculatedBMITextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CalculatedBMITextBox.Enabled = false;
-            this.CalculatedBMITextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CalculatedBMITextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CalculatedBMITextBox.Location = new System.Drawing.Point(12, 129);
             this.CalculatedBMITextBox.Name = "CalculatedBMITextBox";
-            this.CalculatedBMITextBox.Size = new System.Drawing.Size(280, 38);
+            this.CalculatedBMITextBox.Size = new System.Drawing.Size(280, 35);
             this.CalculatedBMITextBox.TabIndex = 22;
             this.CalculatedBMITextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -420,23 +437,6 @@
             this.ConditionTextBox.Size = new System.Drawing.Size(277, 39);
             this.ConditionTextBox.TabIndex = 24;
             this.ConditionTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // BackSpaceButton
-            // 
-            this.BackSpaceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BackSpaceButton.BackColor = System.Drawing.Color.SteelBlue;
-            this.BackSpaceButton.BackgroundImage = global::COMP123_S2019_BMI_Calculator.Properties.Resources.backbutton;
-            this.BackSpaceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BackSpaceButton.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackSpaceButton.Location = new System.Drawing.Point(213, 3);
-            this.BackSpaceButton.Name = "BackSpaceButton";
-            this.BackSpaceButton.Size = new System.Drawing.Size(64, 38);
-            this.BackSpaceButton.TabIndex = 2;
-            this.BackSpaceButton.Tag = "back";
-            this.BackSpaceButton.UseVisualStyleBackColor = false;
-            this.BackSpaceButton.Click += new System.EventHandler(this.KeyBoardButton_Click);
             // 
             // BMICalculatorForm
             // 
